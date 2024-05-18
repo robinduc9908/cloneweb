@@ -1,0 +1,40 @@
+version: "3.8"
+services:
+  backend:
+    container_name: mini_project_be
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    volumes:
+      - './backend:/app/backend'
+    ports:
+      - "1600:1600"
+    depends_on:
+      - db
+    command: ['uvicorn','main:app', '--reload','--host','0.0.0.0','--port','1600']
+  fontend:
+    container_name: mini_project_fe
+    build:
+      context: fontend
+      dockerfile: Dockerfile
+    volumes:
+      - './fontend:/app/fontend'
+    ports:
+      - "1500:1500"
+    expose:
+      - 1500
+    command: ['npm','run','serve','--','--port','1500']
+  db:
+    container_name: mini_project_db
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: default
+    ports:
+      - "1700:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
+    driver: local
