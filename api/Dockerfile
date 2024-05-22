@@ -1,6 +1,6 @@
 FROM python:3.12
 
-WORKDIR /app/backend
+WORKDIR /app/api
 
 RUN pip install poetry==1.7.1
 RUN cd /usr/local/bin

@@ -4,13 +4,12 @@ from peewee import *
 
 POSTGRES_USER = 'postgres'
 POSTGRES_PASS = 'postgres'
-POSTGRES_DB = 'miniproject'
-POSTGRES_PORT = '1700'
+POSTGRES_DB = 'default'
+POSTGRES_PORT = '5432'  # Use the internal port
 POSTGRES_HOST = 'db'
 
 db_state_default = {"closed": None, "conn": None, "ctx": None, "transactions": None}
 db_state = ContextVar("db_state", default=db_state_default.copy())
-
 
 class PeeweeConnectionState(peewee._ConnectionState):
     def __init__(self, **kwargs):
@@ -22,7 +21,6 @@ class PeeweeConnectionState(peewee._ConnectionState):
 
     def __getattr__(self, name):
         return self._state.get()[name]
-
 
 db = peewee.PostgresqlDatabase(
    POSTGRES_DB, user=POSTGRES_USER, password=POSTGRES_PASS, host=POSTGRES_HOST, port=POSTGRES_PORT
